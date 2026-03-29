@@ -38,4 +38,14 @@ public class Tentativa {
 		return respostas;
 	}
 
+	public int calcularNota() {
+		int acertos = 0;
+		for (Resposta r : this.respostas) {
+			if (r.isCorreta()) {
+				acertos++;
+			}
+		}
+		return acertos;
+	}
+
 }
