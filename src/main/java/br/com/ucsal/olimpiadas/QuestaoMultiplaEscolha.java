@@ -2,7 +2,7 @@ package br.com.ucsal.olimpiadas;
 
 import java.util.Arrays;
 
-public class QuestaoMultiplaEscolha extends Questao {
+public class QuestaoMultiplaEscolha extends Questao implements QuestaoComAlternativas {
 
     private String[] alternativas = new String[5];
     private char alternativaCorreta;

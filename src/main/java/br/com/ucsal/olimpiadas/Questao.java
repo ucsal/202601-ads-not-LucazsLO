@@ -39,7 +39,5 @@ public abstract class Questao {
 		this.fenInicial = fenInicial;
 	}
 
-	public abstract String[] exibirAlternativas();
-
 	public abstract boolean isRespostaCorreta(String resposta);
 }

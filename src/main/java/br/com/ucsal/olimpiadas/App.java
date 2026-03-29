@@ -161,8 +161,11 @@ public class App {
 			System.out.println("Posição inicial:");
 			imprimirTabuleiroFen(q.getFenInicial());
 
-			for (var alt : q.exibirAlternativas()) {
-				System.out.println(alt);
+			if (q instanceof QuestaoComAlternativas) {
+				QuestaoComAlternativas separada = (QuestaoComAlternativas) q;
+				for (var alt : separada.exibirAlternativas()) {
+					System.out.println(alt);
+				}
 			}
 
 			System.out.print("Sua resposta: ");
@@ -303,5 +306,6 @@ public class App {
 		q1.setAlternativaCorreta('C');
 
 		questaoRepo.salvar(q1);
+
 	}
 }
