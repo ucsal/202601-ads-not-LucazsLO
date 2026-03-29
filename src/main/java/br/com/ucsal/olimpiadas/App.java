@@ -1,5 +1,10 @@
 package br.com.ucsal.olimpiadas;
 
+import br.com.ucsal.olimpiadas.repository.ParticipanteRepository;
+import br.com.ucsal.olimpiadas.repository.ProvaRepository;
+import br.com.ucsal.olimpiadas.repository.QuestaoRepository;
+import br.com.ucsal.olimpiadas.repository.TentativaRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -100,13 +105,13 @@ public class App {
 		System.out.print("Alternativa correta (A–E): ");
 		char correta;
 		try {
-			correta = Questao.normalizar(in.nextLine().trim().charAt(0));
+			correta = QuestaoMultiplaEscolha.normalizar(in.nextLine().trim().charAt(0));
 		} catch (Exception e) {
 			System.out.println("alternativa inválida");
 			return;
 		}
 
-		var q = new Questao();
+		var q = new QuestaoMultiplaEscolha();
 		q.setProvaId(provaId);
 		q.setEnunciado(enunciado);
 		q.setAlternativas(alternativas);
@@ -156,23 +161,20 @@ public class App {
 			System.out.println("Posição inicial:");
 			imprimirTabuleiroFen(q.getFenInicial());
 
-			for (var alt : q.getAlternativas()) {
+			for (var alt : q.exibirAlternativas()) {
 				System.out.println(alt);
 			}
 
-			System.out.print("Sua resposta (A–E): ");
-			char marcada;
-			try {
-				marcada = Questao.normalizar(in.nextLine().trim().charAt(0));
-			} catch (Exception e) {
-				System.out.println("resposta inválida (marcando como errada)");
-				marcada = 'X';
-			}
+			System.out.print("Sua resposta: ");
+			String respostaDigitada = in.nextLine();
 
 			var r = new Resposta();
 			r.setQuestaoId(q.getId());
-			r.setAlternativaMarcada(marcada);
-			r.setCorreta(q.isRespostaCorreta(marcada));
+			try {
+				r.setAlternativaMarcada(respostaDigitada.trim().charAt(0));
+			} catch (Exception ignored) {
+			}
+			r.setCorreta(q.isRespostaCorreta(respostaDigitada));
 
 			tentativa.getRespostas().add(r);
 		}
@@ -244,7 +246,9 @@ public class App {
 	}
 
 	static void imprimirTabuleiroFen(String fen) {
-
+		if (fen == null || fen.isBlank()) {
+			return;
+		}
 		String parteTabuleiro = fen.split(" ")[0];
 		String[] ranks = parteTabuleiro.split("/");
 
@@ -283,7 +287,7 @@ public class App {
 		prova.setTitulo("Olimpíada 2026 • Nível 1 • Prova A");
 		provaRepo.salvar(prova);
 
-		var q1 = new Questao();
+		var q1 = new QuestaoMultiplaEscolha();
 		q1.setProvaId(prova.getId());
 
 		q1.setEnunciado("""
